@@ -1,0 +1,94 @@
+enable
+configure terminal
+*************CONFIGURACIÓN DEL ROUTER LEON***************
+hostname LEON
+line console 0
+password cisco
+login
+line vty 0 4
+password cisco
+login
+enable secret class
+service password-encryption
+banner motd #"!!! Acceso solo a personal autorizado ¡¡¡"#
+int f 0/0
+ip add 192.168.5.1 255.255.255.0
+no shutdown
+int s 0/0/0
+ip add 10.0.0.1 255.0.0.0
+clock rate 128000
+no shutdown
+ip route 172.16.0.0 255.255.0.0 s 0/0/0
+
+//Tarea configuración con topologia rip
+
+
+************CONFIGURACIÓN DEL ROUTER MEXICO********************
+hostname MEXICO
+line console 0
+password cisco
+login
+line vty 0 4
+password cisco
+login
+enable secret class
+service password-encryption
+banner motd #"!!! Acceso solo a personal autorizado ¡¡¡"#
+int f 0/0
+ip add 172.16.0.1 255.255.0.0
+no shutdown
+int s 0/0/1
+ip add 10.0.0.2 255.0.0.0
+no shutdown
+ip route 192.168.5.0 255.255.255.0 s 0/0/1
+
+
+*************CONFIGURACIÓN DEL ROUTER LEON RIP***************
+hostname LEON
+line console 0
+password cisco
+login
+line vty 0 4
+password cisco
+login
+enable secret class
+service password-encryption
+banner motd #"!!! Acceso solo a personal autorizado ¡¡¡"#
+int f 0/0
+ip add 192.168.5.1 255.255.255.0
+no shutdown
+int s 0/0/0
+ip add 10.0.0.1 255.0.0.0
+clock rate 128000
+no shutdown
+router rip
+version 2
+network 192.168.5.0
+network 10.0.0.0
+no passive-interface Serial0/0/0
+exit
+
+
+************CONFIGURACIÓN DEL ROUTER MEXICO RIP********************
+hostname MEXICO
+line console 0
+password cisco
+login
+line vty 0 4
+password cisco
+login
+enable secret class
+service password-encryption
+banner motd #"!!! Acceso solo a personal autorizado ¡¡¡"#
+int f 0/0
+ip add 172.16.0.1 255.255.0.0
+no shutdown
+int s 0/0/1
+ip add 10.0.0.2 255.0.0.0
+no shutdown
+router rip
+version 2
+network 172.16.0.0
+network 10.0.0.0
+no passive-interface Serial0/0/1
+exit
